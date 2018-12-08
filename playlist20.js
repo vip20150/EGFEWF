@@ -32,7 +32,7 @@ $(function() {
 
 		onYouTubeIframeAPIReady = function() {
 	 		youtubeApi = new YT.Player("ytplayer", {
-				width: width,
+				width: width 100%,
 				height: height,
         videoId: "cfLob5IYMp8",
 				playerVars: {
