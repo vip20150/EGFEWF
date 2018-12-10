@@ -1,65 +1,41 @@
-plyr.setup(document.querySelector('.plyr'));
-var radio = document.querySelector('.plyr').plyr;
+$(function(){
+ 
+  
+  $('audio,video').mediaelementplayer({
+      success: function(player, node) {
+        //player.mediaelement.load();  
+        player.addEventListener('ended', function(e){
+              //alert('done!');
+            	//alert(event.target.id);
+            
+              if (event.target.id == 'mejs') {
+                console.log('first stopped');
+                $('#mejs1')[0].player.media.load(); // fixes mystery error in chrome of Failed to load resource: net::ERR_CONTENT_LENGTH_MISMATCH
+                $('#mejs1')[0].player.media.play();
+                console.log('will start second');
+              } else if (event.target.id == 'mejs1') {
+                console.log('second stopped playing');
+                $('#mejs2')[0].player.media.load();
+                $('#mejs2')[0].player.media.play();
+                console.log('will start third');
+              } else if (event.target.id == 'mejs2') {
+                console.log('third stopped');
+                $('#mejs3')[0].player.media.load();
+                $('#mejs3')[0].player.media.play();
+                console.log('will start fourth');
+              } else if (event.target.id == 'mejs3') {
+                console.log('fourth stopped');
+                //$('#mejs')[0].player.media.load(); // loops the playlist
+                //$('#mejs')[0].player.media.play();
+              }
 
-var player = document.querySelector('.playlist');
-var songs = player.querySelectorAll('.playlist--list li');
-var i;
-var active = null;
+          });
+      }
+  });
+  
+  
 
-for(i = 0; i < songs.length; i++) {
-	songs[i].onclick = changeChannel;
-}
+  //$('#mejs1')[0].player.media.play(); //autoplay
 
-setSource( getId(songs[0]), buildSource(songs[0]) );
-
-document.querySelector('.plyr').addEventListener('ended', nextSong);
-
-function changeChannel(e) {
-	setSource( getId(e.target), buildSource(e.target), true );
-}
-
-function getId(el) {
-	return Number(el.getAttribute('data-id'));
-}
-
-function buildSource(el) {
-	var obj = [{
-		src: el.getAttribute('data-audio'),
-		type: 'audio/ogg'
-	}];
-
-	return obj;
-}
-
-function setSource(selected, sourceAudio, play) {
-	if(active !== selected) {
-		active = selected;
-		radio.source({
-			type: 'audio',
-			title: 'test',
-			sources: sourceAudio
-		});
-
-		for(var i = 0; i < songs.length; i++) {
-			if(Number(songs[i].getAttribute('data-id')) === selected) {
-				songs[i].className = 'active';
-			} else {
-				songs[i].className = '';
-			}
-		}
-
-		if(play) {
-			radio.play();
-		}
-	} else {
-		radio.togglePlay();
-	}
-}
-
-function nextSong(e) {
-	var next = active + 1;
-
-	if(next < songs.length) {
-		setSource( getId(songs[next]), buildSource(songs[next]), true );
-	}
-}
+  	
+});
